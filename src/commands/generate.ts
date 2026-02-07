@@ -2,7 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
 import { generateBandChart } from "../charts/band.js";
-import type { BandData, StyleConfig } from "../types.js";
+import {
+  validateBandData,
+  validateStyleConfig,
+  ValidationError,
+} from "../validate.js";
 
 interface GenerateOptions {
   type: string;
@@ -13,19 +17,58 @@ interface GenerateOptions {
 export function generate(options: GenerateOptions): void {
   const { type, source, style } = options;
 
-  const sourceContent = fs.readFileSync(source, "utf-8");
-  const data = yaml.load(sourceContent) as BandData;
+  if (!fs.existsSync(source)) {
+    console.error(`Error: ファイルが見つかりません: ${source}`);
+    process.exit(1);
+  }
+  if (!fs.existsSync(style)) {
+    console.error(`Error: ファイルが見つかりません: ${style}`);
+    process.exit(1);
+  }
 
-  const styleContent = fs.readFileSync(style, "utf-8");
-  const styleConfig = yaml.load(styleContent) as StyleConfig;
+  let rawData: unknown;
+  try {
+    rawData = yaml.load(fs.readFileSync(source, "utf-8"));
+  } catch (e) {
+    console.error(`Error: ${source} のYAMLパースに失敗しました: ${(e as Error).message}`);
+    process.exit(1);
+  }
+
+  let rawStyle: unknown;
+  try {
+    rawStyle = yaml.load(fs.readFileSync(style, "utf-8"));
+  } catch (e) {
+    console.error(`Error: ${style} のYAMLパースに失敗しました: ${(e as Error).message}`);
+    process.exit(1);
+  }
+
+  try {
+    validateBandData(rawData);
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      console.error(`Error: ${source} のバリデーションエラー: ${e.message}`);
+      process.exit(1);
+    }
+    throw e;
+  }
+
+  try {
+    validateStyleConfig(rawStyle);
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      console.error(`Error: ${style} のバリデーションエラー: ${e.message}`);
+      process.exit(1);
+    }
+    throw e;
+  }
 
   let svg: string;
   switch (type) {
     case "band":
-      svg = generateBandChart(data, styleConfig);
+      svg = generateBandChart(rawData, rawStyle);
       break;
     default:
-      console.error(`Unknown chart type: ${type}`);
+      console.error(`Error: 未知のチャートタイプ: ${type}`);
       process.exit(1);
   }
 

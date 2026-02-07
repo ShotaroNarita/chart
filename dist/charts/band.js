@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hashLabel = hashLabel;
+exports.buildColorMap = buildColorMap;
 exports.generateBandChart = generateBandChart;
 // 和風カラーパレット
 const WAFU_COLORS = [
