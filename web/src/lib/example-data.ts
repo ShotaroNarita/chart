@@ -1,7 +1,7 @@
 export const EXAMPLE_DATA_YAML = `# データ定義
 
-title: "市場規模"
-unit: "億円"
+title: "売上"
+unit: "千円"
 
 rows:
   - name: "2023年"
@@ -32,7 +32,5 @@ rows:
         value: 2`;
 
 export const EXAMPLE_STYLE_YAML = `colors:
-  - label: "A"
-    color: "red"
-  - label: "B"
-    color: "#3b82f6"`;
+  - label: "X"
+    color: "red"`;
