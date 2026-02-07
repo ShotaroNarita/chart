@@ -1,0 +1,182 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #1f2937;
+  color: white;
+}
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.header-subtitle {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Main content */
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left panel */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+}
+
+/* Right panel */
+.right-panel {
+  padding: 16px;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* YAML editor */
+.yaml-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.yaml-editor-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.yaml-input {
+  width: 100%;
+  font-family: "SF Mono", "Consolas", "Monaco", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 12px;
+  resize: vertical;
+  white-space: pre;
+  tab-size: 2;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.yaml-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.yaml-input.has-error {
+  border-color: #ef4444;
+}
+
+.yaml-input.has-error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+  font-family: "SF Mono", "Consolas", "Monaco", monospace;
+  white-space: pre-wrap;
+  padding: 8px;
+  background: #fef2f2;
+  border-radius: 4px;
+  border: 1px solid #fecaca;
+}
+
+/* SVG preview */
+.svg-preview {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-preview svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.svg-preview-empty {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 24px;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #d1d5db;
+}

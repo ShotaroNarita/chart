@@ -1,0 +1,38 @@
+export const EXAMPLE_DATA_YAML = `# データ定義
+
+title: "市場規模"
+unit: "億円"
+
+rows:
+  - name: "2023年"
+    segments:
+      - label: "A"
+        value: 1.1
+      - label: "B"
+        value: 1.1
+      - label: "C"
+        value: 3
+
+  - name: "2024年"
+    segments:
+      - label: "A"
+        value: 1.3
+      - label: "B"
+        value: 1.5
+      - label: "C"
+        value: 1
+
+  - name: "2025年"
+    segments:
+      - label: "A"
+        value: 6
+      - label: "B"
+        value: 0.1
+      - label: "C"
+        value: 2`;
+
+export const EXAMPLE_STYLE_YAML = `colors:
+  - label: "A"
+    color: "red"
+  - label: "B"
+    color: "#3b82f6"`;
