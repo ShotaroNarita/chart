@@ -1,0 +1,51 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Band Chart Data Schema"
+description: "Schema for band chart data configuration"
+type: object
+
+required:
+  - rows
+
+properties:
+  title:
+    type: string
+    description: "Chart title"
+    
+  unit:
+    type: string
+    description: "Unit of measurement (e.g., '億円', '%', 'GB')"
+    
+  rows:
+    type: array
+    description: "Data rows representing each band"
+    minItems: 1
+    items:
+      type: object
+      required:
+        - name
+        - segments
+      properties:
+        name:
+          type: string
+          description: "Row name/label (e.g., '2023年')"
+        segments:
+          type: array
+          description: "Segments within this row"
+          minItems: 1
+          items:
+            type: object
+            required:
+              - label
+              - value
+            properties:
+              label:
+                type: string
+                description: "Segment label"
+              value:
+                type: number
+                minimum: 0
+                description: "Segment value"
+            additionalProperties: false
+      additionalProperties: false
+
+additionalProperties: false
