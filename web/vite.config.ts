@@ -4,6 +4,7 @@ import yaml from "@modyfi/vite-plugin-yaml";
 import path from "path";
 
 export default defineConfig({
+  base: "./",
   plugins: [react(), yaml()],
   resolve: {
     alias: {
