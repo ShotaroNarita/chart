@@ -29,7 +29,6 @@ describe("validateBandData", () => {
 
   it("nullを拒否する", () => {
     expect(() => validateBandData(null)).toThrow(ValidationError);
-    expect(() => validateBandData(null)).toThrow("オブジェクトではありません");
   });
 
   it("文字列を拒否する", () => {
@@ -37,70 +36,81 @@ describe("validateBandData", () => {
   });
 
   it("titleが文字列でない場合を拒否する", () => {
-    expect(() => validateBandData({ title: 123, rows: [] })).toThrow("title は文字列");
-  });
-
-  it("unitが文字列でない場合を拒否する", () => {
-    expect(() => validateBandData({ unit: true, rows: [] })).toThrow("unit は文字列");
+    expect(() =>
+      validateBandData({ title: 123, rows: [{ name: "r", segments: [{ label: "A", value: 1 }] }] })
+    ).toThrow(ValidationError);
   });
 
   it("rowsが無い場合を拒否する", () => {
-    expect(() => validateBandData({})).toThrow("rows は必須");
+    expect(() => validateBandData({})).toThrow(ValidationError);
   });
 
   it("rowsが配列でない場合を拒否する", () => {
-    expect(() => validateBandData({ rows: "not array" })).toThrow("rows は必須の配列");
+    expect(() => validateBandData({ rows: "not array" })).toThrow(ValidationError);
   });
 
   it("rowsが空配列の場合を拒否する", () => {
-    expect(() => validateBandData({ rows: [] })).toThrow("1つ以上の要素が必要");
+    expect(() => validateBandData({ rows: [] })).toThrow(ValidationError);
   });
 
   it("row.nameが無い場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ segments: [{ label: "A", value: 1 }] }] })
-    ).toThrow("rows[0].name は必須");
+    ).toThrow(ValidationError);
   });
 
   it("row.segmentsが無い場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ name: "r" }] })
-    ).toThrow("rows[0].segments は必須");
+    ).toThrow(ValidationError);
   });
 
   it("row.segmentsが空配列の場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ name: "r", segments: [] }] })
-    ).toThrow("rows[0].segments には1つ以上");
+    ).toThrow(ValidationError);
   });
 
   it("segment.labelが無い場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ name: "r", segments: [{ value: 1 }] }] })
-    ).toThrow("segments[0].label は必須");
+    ).toThrow(ValidationError);
   });
 
   it("segment.valueが数値でない場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ name: "r", segments: [{ label: "A", value: "x" }] }] })
-    ).toThrow("segments[0].value は0以上の数値");
+    ).toThrow(ValidationError);
   });
 
   it("segment.valueが負の場合を拒否する", () => {
     expect(() =>
       validateBandData({ rows: [{ name: "r", segments: [{ label: "A", value: -1 }] }] })
-    ).toThrow("segments[0].value は0以上の数値");
+    ).toThrow(ValidationError);
   });
 
-  it("2番目のrowのエラーにインデックスが含まれる", () => {
-    expect(() =>
+  it("エラーメッセージにJSON Schemaのパスが含まれる", () => {
+    try {
       validateBandData({
         rows: [
           { name: "r1", segments: [{ label: "A", value: 1 }] },
           { name: "r2", segments: [{ label: "B", value: -5 }] },
         ],
+      });
+      expect.unreachable("should have thrown");
+    } catch (e) {
+      expect(e).toBeInstanceOf(ValidationError);
+      expect((e as ValidationError).message).toContain("/rows/1/segments/0/value");
+    }
+  });
+
+  it("未定義プロパティを拒否する (additionalProperties: false)", () => {
+    expect(() =>
+      validateBandData({
+        rows: [{ name: "r", segments: [{ label: "A", value: 1 }] }],
+        unknown: true,
       })
-    ).toThrow("rows[1].segments[0].value");
+    ).toThrow(ValidationError);
   });
 });
 
@@ -117,22 +127,33 @@ describe("validateStyleConfig", () => {
 
   it("nullを拒否する", () => {
     expect(() => validateStyleConfig(null)).toThrow(ValidationError);
-    expect(() => validateStyleConfig(null)).toThrow("オブジェクトではありません");
   });
 
   it("colorsが無い場合を拒否する", () => {
-    expect(() => validateStyleConfig({})).toThrow("colors は必須");
+    expect(() => validateStyleConfig({})).toThrow(ValidationError);
   });
 
   it("colors要素にlabelが無い場合を拒否する", () => {
     expect(() =>
-      validateStyleConfig({ colors: [{ color: "#000" }] })
-    ).toThrow("colors[0].label は必須");
+      validateStyleConfig({ colors: [{ color: "#000000" }] })
+    ).toThrow(ValidationError);
   });
 
   it("colors要素にcolorが無い場合を拒否する", () => {
     expect(() =>
       validateStyleConfig({ colors: [{ label: "A" }] })
-    ).toThrow("colors[0].color は必須");
+    ).toThrow(ValidationError);
+  });
+
+  it("colorのパターンが不正な場合を拒否する", () => {
+    expect(() =>
+      validateStyleConfig({ colors: [{ label: "A", color: "#GGG" }] })
+    ).toThrow(ValidationError);
+  });
+
+  it("未定義プロパティを拒否する", () => {
+    expect(() =>
+      validateStyleConfig({ colors: [], extra: 1 })
+    ).toThrow(ValidationError);
   });
 });

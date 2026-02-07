@@ -10,7 +10,6 @@ properties:
   colors:
     type: array
     description: "Color mapping for segment labels"
-    minItems: 1
     items:
       type: object
       required:

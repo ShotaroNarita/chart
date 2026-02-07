@@ -1,8 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.hashLabel = hashLabel;
-exports.buildColorMap = buildColorMap;
-exports.generateBandChart = generateBandChart;
 // 和風カラーパレット
 const WAFU_COLORS = [
     "#C53D43", // 紅色 (べにいろ)
@@ -18,7 +13,7 @@ const WAFU_COLORS = [
     "#4D6E50", // 千歳緑 (ちとせみどり)
     "#D4A168", // 芥子色 (からしいろ)
 ];
-function hashLabel(label) {
+export function hashLabel(label) {
     let hash = 0;
     for (let i = 0; i < label.length; i++) {
         hash = (hash * 31 + label.charCodeAt(i)) | 0;
@@ -41,7 +36,7 @@ function escapeXml(str) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
 }
-function buildColorMap(data, style) {
+export function buildColorMap(data, style) {
     const colorMap = new Map();
     // Hash-based assignment from WAFU_COLORS for all labels
     for (const row of data.rows) {
@@ -57,7 +52,7 @@ function buildColorMap(data, style) {
     }
     return colorMap;
 }
-function generateBandChart(data, style) {
+export function generateBandChart(data, style) {
     const colorMap = buildColorMap(data, style);
     // Collect unique labels in order of appearance for the legend
     const legendLabels = [];

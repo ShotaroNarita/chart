@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const commander_1 = require("commander");
-const generate_js_1 = require("./commands/generate.js");
-const program = new commander_1.Command();
+import { Command } from "commander";
+import { generate } from "./commands/generate.js";
+const program = new Command();
 program
     .name("miomonchart")
     .description("CLI tool for generating chart SVGs from YAML data")
@@ -14,5 +12,5 @@ program
     .requiredOption("--type <type>", "Chart type (e.g., band)")
     .requiredOption("--source <path>", "Path to data YAML file")
     .requiredOption("--style <path>", "Path to style YAML file")
-    .action(generate_js_1.generate);
+    .action(generate);
 program.parse();

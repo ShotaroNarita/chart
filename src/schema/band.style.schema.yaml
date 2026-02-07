@@ -1,0 +1,28 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Band Chart Style Schema"
+description: "Schema for band chart style configuration"
+type: object
+
+required:
+  - colors
+
+properties:
+  colors:
+    type: array
+    description: "Color mapping for segment labels"
+    items:
+      type: object
+      required:
+        - label
+        - color
+      properties:
+        label:
+          type: string
+          description: "Segment label to apply color to"
+        color:
+          type: string
+          description: "Color in hex format (#RRGGBB) or CSS color name"
+          pattern: "^(#[0-9a-fA-F]{6}|[a-z]+)$"
+      additionalProperties: false
+
+additionalProperties: false
