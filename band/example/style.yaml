@@ -1,0 +1,5 @@
+colors:
+  - label: "A"
+    color: "red"
+  - label: "B"
+    color: "#3b82f6"

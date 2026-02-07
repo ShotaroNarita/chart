@@ -30,13 +30,3 @@ rows:
         value: 0.1
       - label: "C"
         value: 2
-
----
-
-# スタイル定義
-
-colors: 
-  - label: "A"
-    color: "red"
-  - label: "B"
-    color: "#3b82f6"
